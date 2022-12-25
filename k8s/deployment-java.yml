@@ -1,37 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: goserver
+  name: javabootapi
   labels:
-    app: goserver
+    app: javabootapi
 spec:
   selector:
     matchLabels:
-      app: goserver    
+      app: javabootapi    
   replicas: 1
   template:
     metadata:
       labels:
-        app: "goserver"
+        app: "javabootapi"
     spec:
       containers:
-        - name: goserver
-          image: "osdeving/teste-go:v7.1"
+        - name: javabootapi
+          image: "osdeving/demo-spring-boot-docker:v2"
           ports:
-          - containerPort: 80
+          - containerPort: 2225
 
           envFrom:
             - configMapRef:
-                name: goserver-env
+                name: javabootapi-env
 
             - secretRef:
-                name: goserver-secret
+                name: javabootapi-secret
                 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: goserver-env
+  name: javabootapi-env
 data:
   spring.boot.application: "golang não é spring boot app"
   NAME: "Willams Santos de Sousa"
@@ -40,7 +40,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: goserver-secret
+  name: javabootapi-secret
 data:
   USERNAME: "d2lsbGFtcwo="
   PASSWORD: "MTIzNDU2Cg=="
@@ -48,14 +48,14 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: goserver-svc
+  name: javabootapi-svc
 spec:
   selector:
-    app: goserver
+    app: javabootapi
   type: NodePort
   ports:
-  - name: goserver-svc
-    port: 80
+  - name: javabootapi-svc
+    port: 2225
     nodePort: 30000
     protocol: TCP
         
